@@ -29,7 +29,7 @@ eater_var = tk.BooleanVar(root)
 eater_inp = tk.Checkbutton(
     root, 
     text='Check this box if you eat bananas',
-    textvariable=eater_var
+    variable=eater_var
 )
 
 num_var = tk.IntVar(root)
@@ -39,24 +39,25 @@ num_label = tk.Label(
 )
 num_inp = tk.Spinbox(root, from_=0, to_=1000, increment=1, textvariable=num_var)
 
+color_var = tk.StringVar(root, value='Any')
 color_label = tk.Label(
     root, 
     text='What is the best color for a banana?'
 )
-
-color_inp = tk.Listbox(root, height=1)
-
 # add choices
 color_choices = (
     'Any', 'Green', 'Green-Yellow', 'Yellow', 'Brown Spotted', 'Black'
 )
-for choice in color_choices:
-    color_inp.insert(tk.END, choice)
+color_inp = tk.OptionMenu(
+    root,
+    color_var, 
+    *color_choices)
 
+plantain_var = tk.BooleanVar(root)
 plantain_label = tk.Label(root,text='Do you eat plantains?')
 plantain_frame = tk.Frame(root)
-plantain_yes_inp = tk.Radiobutton(plantain_frame, text='Yes')
-plantain_no_inp = tk.Radiobutton(plantain_frame, text='No')
+plantain_yes_inp = tk.Radiobutton(plantain_frame, text='Yes', value=True, variable=plantain_var)
+plantain_no_inp = tk.Radiobutton(plantain_frame, text='No', value=False, variable=plantain_var)
 
 banana_haiku_label = tk.Label(
     root, 
@@ -66,7 +67,8 @@ banana_haiku_inp = tk.Text(root, height=3)
 
 submit_btn = tk.Button(root, text='Submit Survey')
 
-output_line = tk.Label(root, text='', anchor='w', justify='left')
+output_var = tk.StringVar(root ,value='')
+output_line = tk.Label(root, text='', textvariable=output_var, anchor='w', justify='left')
 
 title.grid(columnspan=2)
 
@@ -97,26 +99,38 @@ root.rowconfigure(100, weight=1)
 
 def on_submit():
     """To be run when user submits form"""
-    name = name_inp.get()
-    number = num_inp.get()
+    name = name_var.get()
+        
+    
+    try:
+        number = num_var.get()
+    except tk.TclError:
+        number = 10000
 
-    selected_index = color_inp.curselection()
-    if selected_index:
-        color = color_inp.get(selected_index)
-    else:
-        color = ''
+    color = color_var.get()
+    eater = eater_var.get()
+    plantain_eater = plantain_var.get()
+
     
     haiku = banana_haiku_inp.get('1.0', tk.END)
 
-    message = (
-        f'Thanks for taking the survey, {name}.\n'
-        f'Enjoy your {number} {color} bananas!'
-    )
+    if name == '':
+        message = (f'Thanks for taking the survey!\n')
+    else:
+        message = (f'Thanks for taking the survey, {name}.\n')
+        
+    if not eater:
+        message += 'Sorry you don\'t like bananas!\n'
+    else:
+        message += f'Enjoy your {number} {color} bananas!\n'
+    if plantain_eater:
+        message += 'Enjoy your plantains!'
+    else:
+        message += 'May you successfully avoid plantains!'
+    if haiku.strip():
+        message += f'\n\nYour Haiku:\n{haiku}'
 
-    output_line.configure(text=message)
-    print(haiku)
-    print(name_var.get())
-    print(num_var.get())
+    output_var.set(message) # dynamically updates widget
 
 submit_btn.configure(command=on_submit)
 
