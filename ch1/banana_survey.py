@@ -20,19 +20,24 @@ title = tk.Label(
     fg='#FF0'
 )
 
+name_var = tk.StringVar(root) 
 name_label = tk.Label(root, text='What is your name?')
-name_inp = tk.Entry(root)
+name_inp = tk.Entry(root, textvariable=name_var)
 
+
+eater_var = tk.BooleanVar(root)
 eater_inp = tk.Checkbutton(
     root, 
-    text='Check this box if you eat bananas'
+    text='Check this box if you eat bananas',
+    textvariable=eater_var
 )
 
+num_var = tk.IntVar(root)
 num_label = tk.Label(
     root, 
     text='How many bananas do you eat per day?'
 )
-num_inp = tk.Spinbox(root, from_=0, to_=1000, increment=1)
+num_inp = tk.Spinbox(root, from_=0, to_=1000, increment=1, textvariable=num_var)
 
 color_label = tk.Label(
     root, 
@@ -91,7 +96,27 @@ output_line.grid(row=100, columnspan=2, sticky='NSEW')
 root.rowconfigure(100, weight=1)
 
 def on_submit():
-    pass
+    """To be run when user submits form"""
+    name = name_inp.get()
+    number = num_inp.get()
+
+    selected_index = color_inp.curselection()
+    if selected_index:
+        color = color_inp.get(selected_index)
+    else:
+        color = ''
+    
+    haiku = banana_haiku_inp.get('1.0', tk.END)
+
+    message = (
+        f'Thanks for taking the survey, {name}.\n'
+        f'Enjoy your {number} {color} bananas!'
+    )
+
+    output_line.configure(text=message)
+    print(haiku)
+    print(name_var.get())
+    print(num_var.get())
 
 submit_btn.configure(command=on_submit)
 
