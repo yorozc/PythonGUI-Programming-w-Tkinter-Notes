@@ -31,12 +31,14 @@ r_info.grid(sticky=(tk.W + tk.E))
 for i in range(3):
     r_info.columnconfigure(i, weight=1)
 
+# date entry
 variables['Date'] = tk.StringVar()
 ttk.Label(r_info, text='Date').grid(row=0, column=0)
 ttk.Entry(
     r_info, textvariable=variables['Date']
 ).grid(row=1, column=0, sticky=(tk.W + tk.E))
 
+# time entry
 variables['Time'] = tk.StringVar()
 time_values = ['8:00', '12:00', '16:00', '20:00']
 ttk.Label(r_info, text='Time').grid(row=0, column=1)
@@ -44,12 +46,36 @@ ttk.Combobox(
     r_info, textvariable=variables['Time'], values=time_values
 ).grid(row=1, column=1, sticky=(tk.W + tk.E))
 
+# technician entry
 variables['Technician'] = tk.StringVar()
 ttk.Label(r_info, text='Technician').grid(row=0, column=2)
 ttk.Entry(
     r_info, textvariable=variables['Technician']
 ).grid(row=1, column=2, sticky=(tk.W + tk.E))
 
+# lab buttons
+variables['Lab'] = tk.StringVar()
+ttk.Label(r_info, text='Lab').grid(row=2, column=0)
+labframe = ttk.Frame(r_info) # holds radio buttons
+for lab in ('A', 'B', 'C'):
+    ttk.Radiobutton(
+        labframe, value=lab, text=lab, variable=variables['Lab']
+    ).pack(side=tk.LEFT, expand=True)
+labframe.grid(row=3, column=0, sticky=(tk.W + tk.E))
+
+# plot entry 
+variables['Plot'] = tk.StringVar()
+ttk.Label(r_info, text='Plot').grid(row=2, column=1)
+ttk.Combobox(
+    r_info, textvariable=variables['Plot'], values=list(range(1,21))
+).grid(row=3, column=1, sticky=(tk.W + tk.E))
+
+# seed sample entry
+variables['Seed Sample'] = tk.StringVar()
+ttk.Label(r_info, text='Seed Sample').grid(row=2, column= 2)
+ttk.Entry(
+    r_info, textvariable=variables['Seed Sample']
+).grid(row=3, column=2, sticky=(tk.W + tk.E))
 
 
 
