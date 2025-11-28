@@ -77,6 +77,42 @@ ttk.Entry(
     r_info, textvariable=variables['Seed Sample']
 ).grid(row=3, column=2, sticky=(tk.W + tk.E))
 
+# Environment data section
+
+e_info = ttk.Labelframe(drf, text="Environment Data")
+e_info.grid(sticky=(tk.W + tk.E))
+for i in range(3):
+    e_info.columnconfigure(i, weight=1)
+
+# humidity entry
+variables['Humidity'] = tk.DoubleVar()
+ttk.Label(e_info, text='Humidity (g/m^3)').grid(row=0, column=0)
+ttk.Spinbox(
+    e_info, textvariable=variables['Humidity'], 
+    from_=0.5, to=52.0, increment=0.01,
+).grid(row=1, column=0, sticky=(tk.W + tk.E))
+
+# light entry
+variables['Light'] = tk.DoubleVar()
+ttk.Label(e_info, text='Light (klx)').grid(row=0, column=1)
+ttk.Spinbox(
+    e_info, textvariable=variables['Light'], 
+    from_=0, to=100, increment=0.01,
+).grid(row=1, column=1, sticky=(tk.W + tk.E))
+
+# temperature entry 
+variables['Temperature'] = tk.DoubleVar()
+ttk.Label(e_info, text='Temperature (C)').grid(row=0, column=2)
+ttk.Spinbox(
+    e_info, textvariable=variables['Temperature'],
+    from_=4, to=40, increment=0.01
+).grid(row=1, column=2, sticky=(tk.W + tk.E))
+
+# Equipment fault check button
+variables['Equipment Fault'] = tk.BooleanVar(value=False)
+ttk.Checkbutton(
+    e_info, variable=variables['Equipment Fault'], text='Equipment Fault'
+).grid(row=2, column=0, sticky=(tk.W + tk.E))
 
 
 root.mainloop()
