@@ -165,4 +165,23 @@ ttk.Spinbox(
     from_=0, to=1000, increment=0.01
 ).grid(row=3, column=2, sticky=(tk.W + tk.E))
 
+ttk.Label(drf, text='Notes').grid()
+notes_inp = tk.Text(drf, width=75, height=10)
+notes_inp.grid(sticky=(tk.W + tk.E))
+
+buttons = tk.Frame(drf)
+buttons.grid(sticky=tk.E + tk.W)
+save_button = ttk.Button(buttons, text='Save')
+save_button.pack(side=tk.RIGHT)
+
+reset_button = ttk.Button(buttons, text='Reset')
+reset_button.pack(side=tk.RIGHT)
+
+status_variable = tk.StringVar()
+ttk.Label(
+    root, textvariable=status_variable
+).grid(sticky=tk.W + tk.E, row=99, padx=10)
+
+
+
 root.mainloop()
