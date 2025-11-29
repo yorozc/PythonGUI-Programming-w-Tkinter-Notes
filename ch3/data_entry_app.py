@@ -182,6 +182,14 @@ ttk.Label(
     root, textvariable=status_variable
 ).grid(sticky=tk.W + tk.E, row=99, padx=10)
 
+def on_reset():
+    """Called when reset button is clicked, or after save"""
+    for variable in variables.values():
+        if isinstance(variable, tk.BooleanVar):
+            variable.set(False)
+        else:
+            variable.set('')
+    notes_inp.delete('1.0', tk.END)
 
 
 root.mainloop()
