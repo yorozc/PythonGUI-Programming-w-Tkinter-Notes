@@ -1,0 +1,3 @@
+Date,Time,Technician,Lab,Plot,Seed Sample,Humidity,Light,Temperature,Equipment Fault,Plants,Blossoms,Fruit,Min Height,Max Height,Med Height,Notes
+123,12:00,mike,A,4,toast,0.58,0.15,34.0,False,5,10,5,0.05,0.04,0.05,"test
+"

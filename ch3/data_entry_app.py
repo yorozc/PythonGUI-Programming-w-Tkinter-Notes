@@ -6,7 +6,10 @@ import tkinter as tk
 from tkinter import ttk
 from datetime import datetime
 from pathlib import Path 
-import csv 
+import csv
+from turtle import onrelease
+
+from numpy import record 
 
 variables = dict()
 records_saved = 0
@@ -149,7 +152,7 @@ ttk.Label(p_info, text='Min Height (cm)').grid(row=2, column=0)
 ttk.Spinbox(
     p_info, textvariable=variables['Min Height'],
     from_=0, to=1000, increment=0.01
-).grid(row=3, column=1, sticky=(tk.W + tk.E))
+).grid(row=3, column=0, sticky=(tk.W + tk.E))
 
 variables['Max Height'] = tk.DoubleVar()
 ttk.Label(p_info, text='Max Height (cm)').grid(row=2, column=1)
@@ -191,5 +194,40 @@ def on_reset():
             variable.set('')
     notes_inp.delete('1.0', tk.END)
 
+reset_button.configure(command=on_reset)
+
+def on_save():
+    """Handle save button clicks"""
+
+    global records_saved
+    datestring = datetime.today().strftime("%Y-%m-%d")
+    filename = f"abq_data_record_{datestring}.csv"
+    newfile = not Path(filename).exists()
+
+    data = dict()
+    fault = variables['Equipment Fault'].get()
+    for key, variable in variables.items():
+        if fault and key in ('Light', 'Humidity', 'Temperature'):
+            data[key] = ''
+        else:
+            try:
+                data[key] = variable.get()
+            except tk.TclError:
+                status_variable.set(f'Error in field: {key}. Data was not saved.')
+                return 
+    data['Notes'] = notes_inp.get('1.0', tk.END)
+
+    with open(filename, 'a', newline='') as fh:
+        csvwriter = csv.DictWriter(fh, fieldnames=data.keys())
+        if newfile:
+            csvwriter.writeheader()
+        csvwriter.writerow(data)
+
+    records_saved += 1
+    status_variable.set(f"{records_saved} records saved this session")
+    on_reset()
+
+save_button.configure(command=on_save)
+on_reset()
 
 root.mainloop()
