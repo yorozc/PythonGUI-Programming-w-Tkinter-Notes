@@ -1,15 +1,11 @@
 # data_entry_app.py
 """The ABQ Data Entry application"""
 
-from pydoc import text
 import tkinter as tk 
 from tkinter import ttk
 from datetime import datetime
 from pathlib import Path 
 import csv
-from turtle import onrelease
-
-from numpy import record 
 
 variables = dict()
 records_saved = 0
