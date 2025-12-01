@@ -7,6 +7,7 @@ from tkinter import ttk
 from datetime import datetime
 from pathlib import Path 
 import csv
+from turtle import onclick, reset
 
 
 variables = dict()
@@ -85,8 +86,23 @@ buttons = tk.Frame(input_frame)
 buttons.grid(sticky=tk.E + tk.W)
 save_button = ttk.Button(buttons, text='Save')
 save_button.pack(side=tk.RIGHT)
+reset_button = ttk.Button(buttons, text='Reset')
+reset_button.pack(side=tk.RIGHT, padx=(0, 10))
 
 buttons.grid(row=6, column=1, padx=10)
+
+def on_reset():
+    """called to reset all text entries"""
+    for key, variable in variables.items():
+        if key == "Price":
+            variable.set('0.0')
+        elif key == "Quantity" or key == "Barcode":
+            variable.set('0')
+        else:
+            variable.set('')
+
+reset_button.configure(command=on_reset)
+
 
 
 def on_save():
